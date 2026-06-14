@@ -52,24 +52,20 @@ def seed_master_data():
     """Mengisi data master standar PPM tanaman berdasarkan konfigurasi awal."""
     # mendefinisikan data master PPM untuk setiap tanaman
     ppm_presets = {
-        'Selada': (400, 800, 1200),
-        'Bayam': (400, 600, 900),
-        'Kangkung': (400, 700, 1100),
-        'Tomat': (600, 1400, 2000),
-        'Cabai': (600, 1200, 1800),
-        'Wortel': (400, 800, 1200),
-        'Kubis': (500, 1000, 1400),
-        'Bawang Merah': (400, 900, 1200),
-        'Bawang Putih': (400, 900, 1200),
-        'Sawi': (500, 900, 1300),
-        'Pakcoy': (500, 900, 1300)
+        'Selada': (400, 600, 900),    
+        'Bayam': (400, 700, 1000),
+        'Kangkung': (400, 800, 1100), 
+        'Sawi': (500, 900, 1200),
+        'Pakcoy': (500, 900, 1300),
+        'Tomat': (600, 1200, 1800),   
+        'Cabai': (600, 1300, 1900)
     }
 
     # loop otomatis berdasarkan list tanaman dari konfigurasi.py
     for jenis in LIST_TANAMAN:
         if jenis in ppm_presets:
             # get nilai PPM dari preset, jika tidak ada gunakan default
-            semaian, veg, gen = ppm_presets.get(jenis, (500, 900, 1300))
+            semaian, veg, gen = ppm_presets.get(jenis, (500, 900, 1200))
 
             sql = """
             INSERT OR IGNORE INTO config_tanaman(jenis_tanaman, ppm_semaian, ppm_vegetatif, ppm_generatif)
