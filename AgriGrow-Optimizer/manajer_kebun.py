@@ -4,7 +4,7 @@ import database
 
 class ManajerKebun:
     """Kelas logika bisnis utama dengan pola Singleton."""
-
+    
     _instance = None
 
     def __new__(cls):
@@ -47,12 +47,13 @@ class ManajerKebun:
         if df.empty:
             return {"status": "Error", "rekomendasi_ml": 0}
 
-        # Parsing tanggal tanam
-        tgl_tanam = datetime.datetime.strptime(
-            df['tanggal_tanam'].iloc[0], "%Y-%m-%d"
-        ).date()
+        raw_tgl = df['tanggal_tanam'].iloc[0]
+        if isinstance(raw_tgl, str):
+            tgl_tanam = datetime.datetime.strptime(raw_tgl, "%Y-%m-%d").date()
+        else:
+            tgl_tanam = raw_tgl 
         hst = max(0, (datetime.date.today() - tgl_tanam).days)
-        
+
         if hst <= 7:
             target_ppm = int(df['ppm_semaian'].iloc[0])
             fase = "Semaian"
@@ -68,7 +69,6 @@ class ManajerKebun:
 
         rekomendasi_ml = 0.0
         if defisit > 0:
-            # Rumus: (Defisit / 1000) × Volume Air × 5 ml/liter/1000PPM
             rekomendasi_ml = (defisit / 1000) * volume_air * 5
 
         return {
